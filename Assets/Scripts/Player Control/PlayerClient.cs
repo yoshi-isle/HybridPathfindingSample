@@ -15,6 +15,7 @@ public class PlayerClient : MonoBehaviour
     
     [Header("Player Positioning")]
     public float yOffset = 0.1f;
+    public int HitPoints = 100;
 
     void Start()
     {
@@ -29,7 +30,9 @@ public class PlayerClient : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        // Only hit the "Ground" layer by using a layer mask
+        int groundLayerMask = 1 << LayerMask.NameToLayer("Walkable");
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayerMask))
         {
             hoveredLocation = hit.point;
         }
@@ -239,21 +242,36 @@ public class PlayerClient : MonoBehaviour
         return path;
     }
 
+    public void ReceiveEnvironmentalDamage(int damageAmount)
+    {
+        print("I took " + damageAmount + " environmental damage!");
+        try
+        {
+            GameManager.instance.TriggerOnHitpointsDepleted(HitPoints, damageAmount);
+            HitPoints -= (int)damageAmount;
+        }
+        catch
+        {
+            Debug.LogError("Error triggering OnHitpointsDepleted event and updating hitpoints");
+            throw;
+        }
+    }
+
     private Vector3 GetNextStep(Vector3 current, Vector3 end)
     {
         int currentX = Mathf.RoundToInt(current.x);
         int currentZ = Mathf.RoundToInt(current.z);
         int endX = Mathf.RoundToInt(end.x);
         int endZ = Mathf.RoundToInt(end.z);
-        
+
         int diffX = endX - currentX;
         int diffZ = endZ - currentZ;
         int dx = diffX > 0 ? 1 : diffX < 0 ? -1 : 0;
         int dz = diffZ > 0 ? 1 : diffZ < 0 ? -1 : 0;
-        
+
         int nextX = currentX + dx;
         int nextZ = currentZ + dz;
-        
+
         // Sample NavMesh for correct Y position
         NavMeshHit hit;
         Vector3 samplePosition = new Vector3(nextX, end.y, nextZ);
@@ -270,7 +288,7 @@ public class PlayerClient : MonoBehaviour
 
     void OnGUI()
     {
-        Vector3 worldPosition = transform.position + Vector3.up * 2f; // 2 units above player
+        Vector3 worldPosition = transform.position + Vector3.up * 2f;
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
 
         if (screenPosition.z > 0)
