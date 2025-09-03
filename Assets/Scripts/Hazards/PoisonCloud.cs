@@ -36,32 +36,12 @@ public class PoisonCloud : MonoBehaviour
         }
     }
 
+
+
     void OnGUI()
     {
-        Vector3 worldPosition = transform.position + Vector3.up * 2f;
-        Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
-
-        if (playerIsInCloud)
-        {
-            string labelText = "You are in a poison cloud! Taking damage...";
-            Vector2 size = GUI.skin.label.CalcSize(new GUIContent(labelText));
-            float padding = 16f;
-            float width = size.x + padding;
-            float height = size.y + padding / 2;
-            float x = screenPosition.x - width / 2;
-            float y = Screen.height - screenPosition.y - height / 2;
-            GUI.Box(new Rect(x, y, width, height), labelText);
-        }
-        else
-        {
-            string labelText = "If you come in here you'll take damage...";
-            Vector2 size = GUI.skin.label.CalcSize(new GUIContent(labelText));
-            float padding = 16f;
-            float width = size.x + padding;
-            float height = size.y + padding / 2;
-            float x = screenPosition.x - width / 2;
-            float y = Screen.height - screenPosition.y - height / 2;
-            GUI.Box(new Rect(x, y, width, height), labelText);
-        }
+        string labelText = playerIsInCloud ? "You are in a poison cloud! Taking damage..." : "If you come in here you'll take damage...";
+        Rect boxRect = DisplayInfobox.DisplayInfoBox(transform.position, labelText);
+        GUI.Box(boxRect, labelText);
     }
 }

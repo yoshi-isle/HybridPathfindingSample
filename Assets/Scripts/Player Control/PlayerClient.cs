@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Diagnostics;
 
 public class PlayerClient : MonoBehaviour
 {
@@ -288,21 +290,9 @@ public class PlayerClient : MonoBehaviour
 
     void OnGUI()
     {
-        Vector3 worldPosition = transform.position + Vector3.up * 2f;
-        Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
-
-        if (screenPosition.z > 0)
-        {
-            string labelText = $"{transform.position.x:F2}, {transform.position.z:F2}";
-            Vector2 size = GUI.skin.label.CalcSize(new GUIContent(labelText));
-            float padding = 16f;
-            float width = size.x + padding;
-            float height = size.y + padding / 2;
-            float x = screenPosition.x - width / 2;
-            float y = Screen.height - screenPosition.y - height / 2;
-
-            GUI.Box(new Rect(x, y, width, height), labelText);
-        }
+        string labelText = $"{transform.position.x:F2}, {transform.position.z:F2}";
+        Rect boxRect = DisplayInfobox.DisplayInfoBox(transform.position, labelText);
+        GUI.Box(boxRect, labelText);
     }
 
     void OnDrawGizmos()

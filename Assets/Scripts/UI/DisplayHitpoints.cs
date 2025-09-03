@@ -18,7 +18,7 @@ public class DisplayHitpoints : MonoBehaviour
     private void UpdateHitpoints(int currentHitpoints, int damageAmount)
     {
         animator.SetTrigger("Shake");
-        this.currentHitpoints = currentHitpoints;
+        this.currentHitpoints = currentHitpoints - damageAmount;
         hitpointsText.text = this.currentHitpoints.ToString();
     }
 
