@@ -455,13 +455,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15345664, y: -0, z: -0, w: 0.98815536}
-  m_LocalPosition: {x: 0, y: 10.84, z: -25.16}
+  m_LocalRotation: {x: 0.15066397, y: -0.3303247, z: 0.053500913, w: 0.9302277}
+  m_LocalPosition: {x: 20.87, y: 9, z: -17.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 17.655, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 18.4, y: -39.1, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: f2bf9eba0f3384c2da29beb067270eaa, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 799db1eeadea543fd9d506de06dc884e, type: 2}
   m_BuildHeightMesh: 0
 --- !u!64 &666839503
 MeshCollider:
@@ -762,13 +762,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666839501}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.13960512, y: 0, z: 0, w: 0.99020725}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -16.05, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,6 +1088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoveredLocationCubePrefab: {fileID: 9199901856554181924, guid: a5b8d260dc5d849678a586eca16f837b, type: 3}
+  yOffset: 0.6
 --- !u!1 &1485206729
 GameObject:
   m_ObjectHideFlags: 0
