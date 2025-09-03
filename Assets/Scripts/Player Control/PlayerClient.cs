@@ -10,6 +10,8 @@ public class PlayerClient : MonoBehaviour
     NavMeshAgent agent;
     private List<Vector3> path = new List<Vector3>();
     private int currentPathIndex = 0;
+    private Vector3 currentDestination = Vector3.zero;
+    private bool hasDestination = false;
     
     [Header("Player Positioning")]
     public float yOffset = 0.1f;
@@ -36,14 +38,23 @@ public class PlayerClient : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            RequestNewPath(hoveredLocation);
+            SetDestination(hoveredLocation);
         }
     }
-    
-    private void RequestNewPath(Vector3 destination)
+
+    private void SetDestination(Vector3 destination)
     {
+        currentDestination = destination;
+        hasDestination = true;
+        print($"New destination set: {destination}");
+    }
+    
+    private void RecalculatePath()
+    {
+        if (!hasDestination) return;
+        
         Vector3 currentGridPos = new Vector3(Mathf.RoundToInt(transform.position.x), transform.position.y, Mathf.RoundToInt(transform.position.z));
-        Vector3 destinationGridPos = new Vector3(Mathf.RoundToInt(destination.x), destination.y, Mathf.RoundToInt(destination.z));
+        Vector3 destinationGridPos = new Vector3(Mathf.RoundToInt(currentDestination.x), currentDestination.y, Mathf.RoundToInt(currentDestination.z));
         
         // Compare only X and Z for grid position equality
         if (Mathf.RoundToInt(currentGridPos.x) == Mathf.RoundToInt(destinationGridPos.x) && 
@@ -51,13 +62,13 @@ public class PlayerClient : MonoBehaviour
         {
             path.Clear();
             currentPathIndex = 0;
+            hasDestination = false;
+            print("Reached destination!");
             return;
         }
         
-        agent.Warp(transform.position);
-        
         NavMeshPath navPath = new NavMeshPath();
-        if (agent.CalculatePath(destination, navPath))
+        if (agent.CalculatePath(currentDestination, navPath))
         {
             path = ConvertNavMeshPathToGridPath(navPath.corners);
             currentPathIndex = 0;
@@ -72,11 +83,14 @@ public class PlayerClient : MonoBehaviour
                     path.RemoveAt(0);
                 }
             }
+            
+            print($"Path recalculated with {path.Count} waypoints");
         }
         else
         {
             path.Clear();
             currentPathIndex = 0;
+            print("Failed to calculate path to destination");
         }
     }
     
@@ -86,11 +100,14 @@ public class PlayerClient : MonoBehaviour
         
         agent.Warp(transform.position);
         
+        RecalculatePath();
+        
         if (path.Count > 0 && currentPathIndex >= 0 && currentPathIndex < path.Count)
         {
             Vector3 nextPoint = path[currentPathIndex];
             nextPoint.y += yOffset;
             transform.position = nextPoint;
+            GameManager.instance.TriggerOnPathNextTile(nextPoint);
             currentPathIndex++;
             
             print($"Moving to waypoint {currentPathIndex - 1}: {nextPoint}, remaining waypoints: {path.Count - currentPathIndex}");
