@@ -33,5 +33,4 @@ public class GameManager : MonoBehaviour
             yield return _waitForSeconds0_4;
         }
     }
-
 }

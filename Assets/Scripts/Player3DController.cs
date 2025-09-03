@@ -13,6 +13,10 @@ public class Player3DController : MonoBehaviour
 
     private void HandleNextTile(Vector3 tile)
     {
+        Vector3 direction = (tile - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = lookRotation;
+
         agent.SetDestination(tile);
     }
 }
