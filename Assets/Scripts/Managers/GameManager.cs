@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public event Action OnTick;
     public event Action<Vector3> OnPathNextTile;
     public event Action<int, int> OnHitpointsDepleted;
+    public event Action<string, List<string>> OnDialogueDisplay;
     public void TriggerOnPathNextTile(Vector3 tile)
     {
         OnPathNextTile?.Invoke(tile);
@@ -16,6 +18,10 @@ public class GameManager : MonoBehaviour
     public void TriggerOnHitpointsDepleted(int currentHitpoints, int damage)
     {
         OnHitpointsDepleted?.Invoke(currentHitpoints, damage);
+    }
+    public void TriggerOnDialogueDisplay(string npcName, List<string> lines)
+    {
+        OnDialogueDisplay?.Invoke(npcName, lines);
     }
 
     void Awake()
