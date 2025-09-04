@@ -81,8 +81,6 @@ public class Unit : MonoBehaviour
             transform.position = nextPoint;
             GameManager.instance.TriggerOnPathNextTile(nextPoint);
             currentPathIndex++;
-            
-            print($"Moving to waypoint {currentPathIndex - 1}: {nextPoint}, remaining waypoints: {path.Count - currentPathIndex}");
         }
     }
 
